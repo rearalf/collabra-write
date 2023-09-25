@@ -1,16 +1,17 @@
 'use client'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import Link from 'next/link'
+import InputText from '@/components/inputs-text'
 
 const ClientFormSignUp = () => {
 	const [userSignUp, setUserSignUp] = useState<{
-		name: string
+		full_name: string
 		email: string
 		password: string
 		password2: string
 	}>({
-		name: '',
+		full_name: '',
 		email: '',
 		password: '',
 		password2: '',
@@ -27,12 +28,10 @@ const ClientFormSignUp = () => {
 				options: {
 					emailRedirectTo: `${location.origin}/auth/callback`,
 					data: {
-						name: userSignUp.name,
+						full_name: userSignUp.full_name,
 					},
 				},
 			})
-			console.log({ data })
-			console.log({ error })
 		} catch (error) {
 			console.log(error)
 		}
@@ -48,78 +47,38 @@ const ClientFormSignUp = () => {
 		<form className="w-full h-full flex flex-col gap-5 justify-center md:max-w-[500px]">
 			<h1 className="text-3xl font-semibold tracking-wide text-[#1EA6CC] mb-6">Sign Up</h1>
 
-			<label
-				htmlFor="name"
-				className="relative block overflow-hidden rounded-md border border-gray-400 px-3 pt-3 shadow-sm focus-within:border-[#1EA6CC] focus-within:ring-1 focus-within:ring-[#1EA6CC]"
-			>
-				<input
-					autoFocus
-					type="text"
-					id="name"
-					name="name"
-					placeholder="Full name"
-					value={userSignUp.name}
-					onChange={handleChangeInputs}
-					className="peer h-8 w-full border-none bg-transparent p-0 placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
-				/>
-				<span className="absolute start-3 top-3 -translate-y-1/2 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-3 peer-focus:text-xs peer-focus:text-[#1EA6CC]">
-					Full name
-				</span>
-			</label>
+			<InputText
+				autoFocus
+				type="text"
+				name="full_name"
+				label="Full name"
+				value={userSignUp.full_name}
+				onChange={handleChangeInputs}
+			/>
 
-			<label
-				htmlFor="email"
-				className="relative block overflow-hidden rounded-md border border-gray-400 px-3 pt-3 shadow-sm focus-within:border-[#1EA6CC] focus-within:ring-1 focus-within:ring-[#1EA6CC]"
-			>
-				<input
-					type="email"
-					id="email"
-					name="email"
-					placeholder="Email"
-					value={userSignUp.email}
-					onChange={handleChangeInputs}
-					className="peer h-8 w-full border-none bg-transparent p-0 placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
-				/>
-				<span className="absolute start-3 top-3 -translate-y-1/2 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-3 peer-focus:text-xs peer-focus:text-[#1EA6CC]">
-					Email
-				</span>
-			</label>
+			<InputText
+				type="email"
+				name="email"
+				label="Email"
+				value={userSignUp.email}
+				onChange={handleChangeInputs}
+			/>
 
-			<label
-				htmlFor="password"
-				className="relative block overflow-hidden rounded-md border border-gray-400 px-3 pt-3 shadow-sm focus-within:border-[#1EA6CC] focus-within:ring-1 focus-within:ring-[#1EA6CC]"
-			>
-				<input
-					type="password"
-					id="password"
-					name="password"
-					placeholder="password"
-					value={userSignUp.password}
-					onChange={handleChangeInputs}
-					className="peer h-8 w-full border-none bg-transparent p-0 placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
-				/>
-				<span className="absolute start-3 top-3 -translate-y-1/2 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-3 peer-focus:text-xs peer-focus:text-[#1EA6CC]">
-					Password
-				</span>
-			</label>
+			<InputText
+				type="password"
+				name="password"
+				label="Password"
+				value={userSignUp.password}
+				onChange={handleChangeInputs}
+			/>
 
-			<label
-				htmlFor="password2"
-				className="relative block overflow-hidden rounded-md border border-gray-400 px-3 pt-3 shadow-sm focus-within:border-[#1EA6CC] focus-within:ring-1 focus-within:ring-[#1EA6CC]"
-			>
-				<input
-					type="password"
-					id="password2"
-					name="password2"
-					placeholder="password"
-					value={userSignUp.password2}
-					onChange={handleChangeInputs}
-					className="peer h-8 w-full border-none bg-transparent p-0 placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
-				/>
-				<span className="absolute start-3 top-3 -translate-y-1/2 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-3 peer-focus:text-xs peer-focus:text-[#1EA6CC]">
-					Confirm password
-				</span>
-			</label>
+			<InputText
+				type="password"
+				name="password2"
+				label="Confirm password"
+				value={userSignUp.password2}
+				onChange={handleChangeInputs}
+			/>
 
 			<div className="flex justify-center">
 				<button
